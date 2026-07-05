@@ -2,6 +2,26 @@
 
 All notable changes to the Daily Energy Flow Solar integration are documented here.
 
+## [0.4.0]
+
+- Added two new required power input fields: **Akkuladung Leistung**
+  (battery charge power) and **Akkuentladung Leistung** (battery
+  discharge power).
+- Added a new sensor: **Hausverbrauch Leistung** (house consumption
+  power), calculated in real time as:
+  ```
+  house_consumption_power = max(
+      grid_import_power + solar_production_power - grid_export_power
+      - battery_charge_power + battery_discharge_power,
+      0
+  )
+  ```
+  This mirrors the existing daily house consumption formula, but uses
+  live power readings instead of daily energy counters.
+- Added diagnostic attributes to the new sensor (`formula`, the raw
+  power values used, and a `battery_note`).
+- Updated German and English translations and documentation.
+
 ## [0.3.0]
 
 - **Fixed a sign-convention bug** in the grid power handling. There is

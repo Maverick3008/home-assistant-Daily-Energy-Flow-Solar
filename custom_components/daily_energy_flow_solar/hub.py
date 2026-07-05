@@ -27,7 +27,9 @@ from homeassistant.util import dt as dt_util
 
 from .const import (
     ATTR_AUTARKY_PERCENT,
+    ATTR_BATTERY_CHARGE_POWER,
     ATTR_BATTERY_CHARGE_TODAY,
+    ATTR_BATTERY_DISCHARGE_POWER,
     ATTR_BATTERY_DISCHARGE_TODAY,
     ATTR_CURRENT_GRID_PRICE,
     ATTR_GRID_EXPORT_POWER,
@@ -36,13 +38,16 @@ from .const import (
     ATTR_GRID_IMPORT_COST_TODAY,
     ATTR_GRID_IMPORT_POWER,
     ATTR_GRID_IMPORT_TODAY,
+    ATTR_HOUSE_CONSUMPTION_POWER,
     ATTR_HOUSE_CONSUMPTION_TODAY,
     ATTR_PV_SELF_CONSUMPTION_PERCENT,
     ATTR_PV_SELF_CONSUMPTION_POWER,
     ATTR_PV_SELF_CONSUMPTION_TODAY,
     ATTR_SOLAR_PRODUCTION_POWER,
     ATTR_SOLAR_PRODUCTION_TODAY,
+    CONF_BATTERY_CHARGE_POWER,
     CONF_BATTERY_CHARGE_TODAY,
+    CONF_BATTERY_DISCHARGE_POWER,
     CONF_BATTERY_DISCHARGE_TODAY,
     CONF_GRID_POWER,
     CONF_GRID_POWER_INVERTED,
@@ -153,6 +158,8 @@ class DailyEnergyFlowHub:
             CONF_BATTERY_DISCHARGE_TODAY,
             CONF_SOLAR_PRODUCTION_POWER,
             CONF_GRID_POWER,
+            CONF_BATTERY_CHARGE_POWER,
+            CONF_BATTERY_DISCHARGE_POWER,
             CONF_PRICE_SOURCE,
         ]
         return [self._conf(key) for key in keys if self._conf(key)]
@@ -336,6 +343,18 @@ class DailyEnergyFlowHub:
             solar_production_power - grid_export_power, 0.0
         )
 
+        battery_charge_power = self._read_power(CONF_BATTERY_CHARGE_POWER)
+        battery_discharge_power = self._read_power(CONF_BATTERY_DISCHARGE_POWER)
+
+        house_consumption_power = max(
+            grid_import_power
+            + solar_production_power
+            - grid_export_power
+            - battery_charge_power
+            + battery_discharge_power,
+            0.0,
+        )
+
         grid_import_today = self._read_energy(CONF_GRID_IMPORT_TODAY)
         grid_export_today = self._read_energy(CONF_GRID_EXPORT_TODAY)
         solar_production_today = self._read_energy(CONF_SOLAR_PRODUCTION_TODAY)
@@ -392,6 +411,9 @@ class DailyEnergyFlowHub:
             ATTR_GRID_IMPORT_POWER: grid_import_power,
             ATTR_GRID_EXPORT_POWER: grid_export_power,
             ATTR_PV_SELF_CONSUMPTION_POWER: pv_self_consumption_power,
+            ATTR_BATTERY_CHARGE_POWER: battery_charge_power,
+            ATTR_BATTERY_DISCHARGE_POWER: battery_discharge_power,
+            ATTR_HOUSE_CONSUMPTION_POWER: house_consumption_power,
             ATTR_GRID_IMPORT_TODAY: grid_import_today,
             ATTR_GRID_EXPORT_TODAY: grid_export_today,
             ATTR_SOLAR_PRODUCTION_TODAY: solar_production_today,
@@ -445,6 +467,24 @@ class DailyEnergyFlowHub:
                 "house_consumption_today = max(grid_import_today + "
                 "solar_production_today - grid_export_today - "
                 "battery_charge_today + battery_discharge_today, 0)"
+            ),
+            "battery_note": BATTERY_NOTE,
+        }
+
+    def house_consumption_power_attributes(self) -> dict[str, Any]:
+        return {
+            "formula": (
+                "house_consumption_power = max(grid_import_power + "
+                "solar_production_power - grid_export_power - "
+                "battery_charge_power + battery_discharge_power, 0)"
+            ),
+            "grid_import_power_used_w": self.data.get(ATTR_GRID_IMPORT_POWER),
+            "solar_production_power_used_w": self.data.get(ATTR_SOLAR_PRODUCTION_POWER),
+            "grid_export_power_used_w": self.data.get(ATTR_GRID_EXPORT_POWER),
+            "battery_charge_power_used_w": self.data.get(ATTR_BATTERY_CHARGE_POWER),
+            "battery_discharge_power_used_w": self.data.get(ATTR_BATTERY_DISCHARGE_POWER),
+            "calculated_house_consumption_power_w": self.data.get(
+                ATTR_HOUSE_CONSUMPTION_POWER
             ),
             "battery_note": BATTERY_NOTE,
         }

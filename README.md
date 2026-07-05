@@ -9,7 +9,7 @@ Everything is implemented as real Home Assistant sensor entities
 provided by a custom integration. No YAML template sensors are used.
 
 - Domain: `daily_energy_flow_solar`
-- Version: `0.3.0`
+- Version: `0.4.0`
 - Config flow: yes (GUI only, German labels)
 - IoT class: `local_polling`
 
@@ -47,7 +47,7 @@ before using them here.
 
 ## Installation
 
-Repository: <https://github.com/Maverick3008/home-assistant-daily-energy-flow>
+Repository: <https://github.com/Maverick3008/home-assistant-Daily-Energy-Flow-Solar>
 
 ### Manual installation
 
@@ -62,7 +62,7 @@ Repository: <https://github.com/Maverick3008/home-assistant-daily-energy-flow>
 ### Installation via HACS
 
 1. In HACS, go to **Integrations → ⋮ → Custom repositories** and add:
-   - Repository: `https://github.com/Maverick3008/home-assistant-daily-energy-flow`
+   - Repository: `https://github.com/Maverick3008/home-assistant-Daily-Energy-Flow-Solar`
    - Category: `Integration`
 2. Install **Daily Energy Flow Solar** from HACS.
 3. Restart Home Assistant.
@@ -92,6 +92,8 @@ German in the UI):
 | -------------------------------------------------------------------- | -------------------------- |
 | Solarproduktion Leistung                                             | Current solar production power |
 | Netzleistung (positiv = Netzbezug, negativ = Netzeinspeisung)         | A single **bidirectional** grid power sensor |
+| Akkuladung Leistung                                                  | Current battery charge power |
+| Akkuentladung Leistung                                               | Current battery discharge power |
 
 **Important:** the grid power field is not a dedicated "export only"
 sensor — it is the one sensor your meter/inverter already provides
@@ -137,6 +139,7 @@ automatically reloads the integration.
 | Netzbezug Leistung                         | W       | power         | measurement   |
 | Netzeinspeisung Leistung                   | W       | power         | measurement   |
 | PV-Eigenverbrauch Leistung                 | W       | power         | measurement   |
+| Hausverbrauch Leistung                     | W       | power         | measurement   |
 | Netzbezug heute                            | kWh     | energy        | total         |
 | Netzeinspeisung heute                      | kWh     | energy        | total         |
 | Solarproduktion heute                      | kWh     | energy        | total         |
@@ -208,7 +211,19 @@ house_consumption_today = max(
     + battery_discharge_today,
     0
 )
+
+house_consumption_power = max(
+    grid_import_power
+    + solar_production_power
+    - grid_export_power
+    - battery_charge_power
+    + battery_discharge_power,
+    0
+)
 ```
+
+The instantaneous power version uses live power readings instead of
+daily energy counters, giving a real-time house consumption value.
 
 **Battery charging is subtracted** — energy going into the battery is
 not being consumed by the house yet. **Battery discharging is added**

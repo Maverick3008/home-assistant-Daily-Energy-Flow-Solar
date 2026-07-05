@@ -11,7 +11,9 @@ from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers import selector
 
 from .const import (
+    CONF_BATTERY_CHARGE_POWER,
     CONF_BATTERY_CHARGE_TODAY,
+    CONF_BATTERY_DISCHARGE_POWER,
     CONF_BATTERY_DISCHARGE_TODAY,
     CONF_DECIMAL_PLACES,
     CONF_GRID_POWER,
@@ -100,6 +102,14 @@ def _build_schema(defaults: dict[str, Any] | None = None) -> vol.Schema:
                 ),
             ): selector.BooleanSelector(),
             vol.Required(
+                CONF_BATTERY_CHARGE_POWER,
+                default=defaults.get(CONF_BATTERY_CHARGE_POWER),
+            ): _power_selector(),
+            vol.Required(
+                CONF_BATTERY_DISCHARGE_POWER,
+                default=defaults.get(CONF_BATTERY_DISCHARGE_POWER),
+            ): _power_selector(),
+            vol.Required(
                 CONF_PRICE_SOURCE, default=defaults.get(CONF_PRICE_SOURCE)
             ): _price_selector(),
             vol.Required(
@@ -137,6 +147,8 @@ def _validate_units(
     power_fields = [
         CONF_SOLAR_PRODUCTION_POWER,
         CONF_GRID_POWER,
+        CONF_BATTERY_CHARGE_POWER,
+        CONF_BATTERY_DISCHARGE_POWER,
     ]
 
     for field in energy_fields:

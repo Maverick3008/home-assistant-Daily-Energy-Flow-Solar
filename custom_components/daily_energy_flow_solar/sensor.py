@@ -32,6 +32,7 @@ from .const import (
     ATTR_GRID_IMPORT_COST_TODAY,
     ATTR_GRID_IMPORT_POWER,
     ATTR_GRID_IMPORT_TODAY,
+    ATTR_HOUSE_CONSUMPTION_POWER,
     ATTR_HOUSE_CONSUMPTION_TODAY,
     ATTR_PV_SELF_CONSUMPTION_PERCENT,
     ATTR_PV_SELF_CONSUMPTION_POWER,
@@ -98,6 +99,17 @@ POWER_SENSORS: tuple[DailyEnergyFlowEntityDescription, ...] = (
         native_unit_of_measurement=UnitOfPower.WATT,
         icon="mdi:home-lightning-bolt",
         attributes_fn=lambda hub: hub.pv_self_consumption_power_attributes(),
+    ),
+    DailyEnergyFlowEntityDescription(
+        key="house_consumption_power",
+        translation_key="house_consumption_power",
+        name="Hausverbrauch Leistung",
+        value_key=ATTR_HOUSE_CONSUMPTION_POWER,
+        device_class=SensorDeviceClass.POWER,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfPower.WATT,
+        icon="mdi:home-import-outline",
+        attributes_fn=lambda hub: hub.house_consumption_power_attributes(),
     ),
 )
 

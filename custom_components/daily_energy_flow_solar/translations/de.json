@@ -14,6 +14,8 @@
           "solar_production_power": "Solarproduktion Leistung",
           "grid_power": "Netzleistung (positiv = Netzbezug, negativ = Netzeinspeisung)",
           "grid_power_inverted": "Vorzeichen ist umgekehrt (positiv = Netzeinspeisung)",
+          "battery_charge_power": "Akkuladung Leistung",
+          "battery_discharge_power": "Akkuentladung Leistung",
           "price_source": "Aktueller Netzstrompreis",
           "price_unit": "Einheit des Netzstrompreises",
           "decimal_places": "Nachkommastellen"
@@ -42,6 +44,8 @@
           "solar_production_power": "Solarproduktion Leistung",
           "grid_power": "Netzleistung (positiv = Netzbezug, negativ = Netzeinspeisung)",
           "grid_power_inverted": "Vorzeichen ist umgekehrt (positiv = Netzeinspeisung)",
+          "battery_charge_power": "Akkuladung Leistung",
+          "battery_discharge_power": "Akkuentladung Leistung",
           "price_source": "Aktueller Netzstrompreis",
           "price_unit": "Einheit des Netzstrompreises",
           "decimal_places": "Nachkommastellen"
@@ -67,6 +71,7 @@
       "grid_import_power": { "name": "Netzbezug Leistung" },
       "grid_export_power": { "name": "Netzeinspeisung Leistung" },
       "pv_self_consumption_power": { "name": "PV-Eigenverbrauch Leistung" },
+      "house_consumption_power": { "name": "Hausverbrauch Leistung" },
       "grid_import_today": { "name": "Netzbezug heute" },
       "grid_export_today": { "name": "Netzeinspeisung heute" },
       "solar_production_today": { "name": "Solarproduktion heute" },

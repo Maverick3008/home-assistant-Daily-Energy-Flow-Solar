@@ -10,7 +10,7 @@ Integration bereitgestellt. Es werden keine YAML-Template-Sensoren
 verwendet.
 
 - Domain: `daily_energy_flow_solar`
-- Version: `0.3.0`
+- Version: `0.4.0`
 - Config Flow: ja (nur über die GUI, deutsche Begriffe)
 - IoT-Klasse: `local_polling`
 
@@ -47,7 +47,7 @@ einem Utility Meter) einen Tageszähler daraus ableiten.
 
 ## Installation
 
-Repository: <https://github.com/Maverick3008/home-assistant-daily-energy-flow>
+Repository: <https://github.com/Maverick3008/home-assistant-Daily-Energy-Flow-Solar>
 
 ### Manuelle Installation
 
@@ -63,7 +63,7 @@ Repository: <https://github.com/Maverick3008/home-assistant-daily-energy-flow>
 
 1. Gehe in HACS zu **Integrationen → ⋮ → Benutzerdefinierte
    Repositories** und trage ein:
-   - Repository: `https://github.com/Maverick3008/home-assistant-daily-energy-flow`
+   - Repository: `https://github.com/Maverick3008/home-assistant-Daily-Energy-Flow-Solar`
    - Kategorie: `Integration`
 2. Installiere **Daily Energy Flow Solar** über HACS.
 3. Home Assistant neu starten.
@@ -92,6 +92,8 @@ du gebeten, folgende vorhandenen Entitäten und Optionen auszuwählen:
 | --------------------------------------------------------------------- | ------------------------------------ |
 | Solarproduktion Leistung                                              | Aktuelle Solarproduktionsleistung   |
 | Netzleistung (positiv = Netzbezug, negativ = Netzeinspeisung)         | Ein einziger **bidirektionaler** Netzleistungssensor |
+| Akkuladung Leistung                                                   | Aktuelle Akkuladeleistung |
+| Akkuentladung Leistung                                                | Aktuelle Akkuentladeleistung |
 
 **Wichtig:** Das Netzleistungs-Feld ist kein reiner
 „Nur-Einspeisung"-Sensor — es ist der eine Sensor, den dein
@@ -138,6 +140,7 @@ Options-Änderung lädt die Integration automatisch neu.
 | Netzbezug Leistung                         | W        | power         | measurement   |
 | Netzeinspeisung Leistung                   | W        | power         | measurement   |
 | PV-Eigenverbrauch Leistung                 | W        | power         | measurement   |
+| Hausverbrauch Leistung                     | W        | power         | measurement   |
 | Netzbezug heute                            | kWh      | energy        | total         |
 | Netzeinspeisung heute                      | kWh      | energy        | total         |
 | Solarproduktion heute                      | kWh      | energy        | total         |
@@ -210,7 +213,19 @@ house_consumption_today = max(
     + battery_discharge_today,
     0
 )
+
+house_consumption_power = max(
+    grid_import_power
+    + solar_production_power
+    - grid_export_power
+    - battery_charge_power
+    + battery_discharge_power,
+    0
+)
 ```
+
+Die Leistungs-Variante nutzt Live-Leistungswerte statt Tageszähler und
+liefert damit den aktuellen Hausverbrauch in Echtzeit.
 
 **Akkuladung wird abgezogen** — Energie, die in den Akku fließt, wurde
 noch nicht vom Haus verbraucht. **Akkuentladung wird addiert** —
