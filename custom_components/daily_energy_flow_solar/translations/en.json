@@ -1,0 +1,83 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Daily Energy Flow Solar",
+        "description": "Set up the Daily Energy Flow Solar integration. Select your existing daily counters and power sensors.",
+        "data": {
+          "name": "Name",
+          "grid_import_today": "Grid import today",
+          "grid_export_today": "Grid export today",
+          "solar_production_today": "Solar production today",
+          "battery_charge_today": "Battery charge today",
+          "battery_discharge_today": "Battery discharge today",
+          "solar_production_power": "Solar production power",
+          "grid_export_power": "Grid export power",
+          "grid_export_power_negative": "Grid export power is negative",
+          "price_source": "Current grid electricity price",
+          "price_unit": "Unit of the grid electricity price",
+          "decimal_places": "Decimal places"
+        }
+      }
+    },
+    "error": {
+      "invalid_energy_unit": "This entity must be an energy sensor with Wh, kWh or MWh.",
+      "invalid_power_unit": "This entity must be a power sensor with W, kW or MW."
+    },
+    "abort": {
+      "already_configured": "This Daily Energy Flow Solar instance is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Daily Energy Flow Solar options",
+        "description": "Update your sensor selection and settings.",
+        "data": {
+          "grid_import_today": "Grid import today",
+          "grid_export_today": "Grid export today",
+          "solar_production_today": "Solar production today",
+          "battery_charge_today": "Battery charge today",
+          "battery_discharge_today": "Battery discharge today",
+          "solar_production_power": "Solar production power",
+          "grid_export_power": "Grid export power",
+          "grid_export_power_negative": "Grid export power is negative",
+          "price_source": "Current grid electricity price",
+          "price_unit": "Unit of the grid electricity price",
+          "decimal_places": "Decimal places"
+        }
+      }
+    },
+    "error": {
+      "invalid_energy_unit": "This entity must be an energy sensor with Wh, kWh or MWh.",
+      "invalid_power_unit": "This entity must be a power sensor with W, kW or MW."
+    }
+  },
+  "selector": {
+    "price_unit": {
+      "options": {
+        "EUR/kWh": "EUR/kWh",
+        "ct/kWh": "ct/kWh"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "solar_production_power": { "name": "Solar production power" },
+      "grid_export_power": { "name": "Grid export power" },
+      "pv_self_consumption_power": { "name": "PV self-consumption power" },
+      "grid_import_today": { "name": "Grid import today" },
+      "grid_export_today": { "name": "Grid export today" },
+      "solar_production_today": { "name": "Solar production today" },
+      "battery_charge_today": { "name": "Battery charge today" },
+      "battery_discharge_today": { "name": "Battery discharge today" },
+      "pv_self_consumption_today": { "name": "PV self-consumption today" },
+      "house_consumption_today": { "name": "House consumption today" },
+      "autarky_percent": { "name": "Autarky" },
+      "pv_self_consumption_percent": { "name": "PV self-consumption" },
+      "current_grid_price": { "name": "Current grid electricity price" },
+      "grid_import_cost_today": { "name": "Grid import cost today" },
+      "grid_import_average_price_today": { "name": "Average grid electricity price today" }
+    }
+  }
+}

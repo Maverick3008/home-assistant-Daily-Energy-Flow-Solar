@@ -1,0 +1,8 @@
+{
+  "name": "Daily Energy Flow Solar",
+  "render_readme": true,
+  "content_in_root": false,
+  "zip_release": true,
+  "filename": "daily_energy_flow_solar.zip",
+  "homeassistant": "2024.1.0"
+}

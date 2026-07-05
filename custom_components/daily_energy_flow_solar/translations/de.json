@@ -1,0 +1,83 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Daily Energy Flow Solar",
+        "description": "Richte die Daily Energy Flow Solar Integration ein. Wähle deine vorhandenen Tageszähler und Leistungssensoren aus.",
+        "data": {
+          "name": "Name",
+          "grid_import_today": "Netzbezug heute",
+          "grid_export_today": "Netzeinspeisung heute",
+          "solar_production_today": "Solarproduktion heute",
+          "battery_charge_today": "Akkuladung heute",
+          "battery_discharge_today": "Akkuentladung heute",
+          "solar_production_power": "Solarproduktion Leistung",
+          "grid_export_power": "Netzeinspeisung Leistung",
+          "grid_export_power_negative": "Netzeinspeisung Leistung ist negativ",
+          "price_source": "Aktueller Netzstrompreis",
+          "price_unit": "Einheit des Netzstrompreises",
+          "decimal_places": "Nachkommastellen"
+        }
+      }
+    },
+    "error": {
+      "invalid_energy_unit": "Diese Entität muss ein Energie-Sensor mit Wh, kWh oder MWh sein.",
+      "invalid_power_unit": "Diese Entität muss ein Leistungs-Sensor mit W, kW oder MW sein."
+    },
+    "abort": {
+      "already_configured": "Diese Daily Energy Flow Solar Instanz ist bereits eingerichtet."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Daily Energy Flow Solar Optionen",
+        "description": "Aktualisiere deine Sensorauswahl und Einstellungen.",
+        "data": {
+          "grid_import_today": "Netzbezug heute",
+          "grid_export_today": "Netzeinspeisung heute",
+          "solar_production_today": "Solarproduktion heute",
+          "battery_charge_today": "Akkuladung heute",
+          "battery_discharge_today": "Akkuentladung heute",
+          "solar_production_power": "Solarproduktion Leistung",
+          "grid_export_power": "Netzeinspeisung Leistung",
+          "grid_export_power_negative": "Netzeinspeisung Leistung ist negativ",
+          "price_source": "Aktueller Netzstrompreis",
+          "price_unit": "Einheit des Netzstrompreises",
+          "decimal_places": "Nachkommastellen"
+        }
+      }
+    },
+    "error": {
+      "invalid_energy_unit": "Diese Entität muss ein Energie-Sensor mit Wh, kWh oder MWh sein.",
+      "invalid_power_unit": "Diese Entität muss ein Leistungs-Sensor mit W, kW oder MW sein."
+    }
+  },
+  "selector": {
+    "price_unit": {
+      "options": {
+        "EUR/kWh": "€/kWh",
+        "ct/kWh": "ct/kWh"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "solar_production_power": { "name": "Solarproduktion Leistung" },
+      "grid_export_power": { "name": "Netzeinspeisung Leistung" },
+      "pv_self_consumption_power": { "name": "PV-Eigenverbrauch Leistung" },
+      "grid_import_today": { "name": "Netzbezug heute" },
+      "grid_export_today": { "name": "Netzeinspeisung heute" },
+      "solar_production_today": { "name": "Solarproduktion heute" },
+      "battery_charge_today": { "name": "Akkuladung heute" },
+      "battery_discharge_today": { "name": "Akkuentladung heute" },
+      "pv_self_consumption_today": { "name": "PV-Eigenverbrauch heute" },
+      "house_consumption_today": { "name": "Hausverbrauch heute" },
+      "autarky_percent": { "name": "Autarkie" },
+      "pv_self_consumption_percent": { "name": "PV-Eigenverbrauch" },
+      "current_grid_price": { "name": "Aktueller Netzstrompreis" },
+      "grid_import_cost_today": { "name": "Netzbezug Kosten heute" },
+      "grid_import_average_price_today": { "name": "Durchschnittlicher Netzstrompreis heute" }
+    }
+  }
+}
