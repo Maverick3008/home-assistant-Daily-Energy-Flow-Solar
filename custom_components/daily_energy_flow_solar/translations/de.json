@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Daily Energy Flow Solar",
-        "description": "Richte die Daily Energy Flow Solar Integration ein. Wähle deine vorhandenen Tageszähler und Leistungssensoren aus.",
+        "description": "Richte die Daily Energy Flow Solar Integration ein. Wähle deine vorhandenen Tageszähler und Leistungssensoren aus. Der Netzleistungssensor ist bidirektional: positiv = Netzbezug, negativ = Netzeinspeisung.",
         "data": {
           "name": "Name",
           "grid_import_today": "Netzbezug heute",
@@ -12,8 +12,8 @@
           "battery_charge_today": "Akkuladung heute",
           "battery_discharge_today": "Akkuentladung heute",
           "solar_production_power": "Solarproduktion Leistung",
-          "grid_export_power": "Netzeinspeisung Leistung",
-          "grid_export_power_negative": "Netzeinspeisung Leistung ist negativ",
+          "grid_power": "Netzleistung (positiv = Netzbezug, negativ = Netzeinspeisung)",
+          "grid_power_inverted": "Vorzeichen ist umgekehrt (positiv = Netzeinspeisung)",
           "price_source": "Aktueller Netzstrompreis",
           "price_unit": "Einheit des Netzstrompreises",
           "decimal_places": "Nachkommastellen"
@@ -32,7 +32,7 @@
     "step": {
       "init": {
         "title": "Daily Energy Flow Solar Optionen",
-        "description": "Aktualisiere deine Sensorauswahl und Einstellungen.",
+        "description": "Aktualisiere deine Sensorauswahl und Einstellungen. Der Netzleistungssensor ist bidirektional: positiv = Netzbezug, negativ = Netzeinspeisung.",
         "data": {
           "grid_import_today": "Netzbezug heute",
           "grid_export_today": "Netzeinspeisung heute",
@@ -40,8 +40,8 @@
           "battery_charge_today": "Akkuladung heute",
           "battery_discharge_today": "Akkuentladung heute",
           "solar_production_power": "Solarproduktion Leistung",
-          "grid_export_power": "Netzeinspeisung Leistung",
-          "grid_export_power_negative": "Netzeinspeisung Leistung ist negativ",
+          "grid_power": "Netzleistung (positiv = Netzbezug, negativ = Netzeinspeisung)",
+          "grid_power_inverted": "Vorzeichen ist umgekehrt (positiv = Netzeinspeisung)",
           "price_source": "Aktueller Netzstrompreis",
           "price_unit": "Einheit des Netzstrompreises",
           "decimal_places": "Nachkommastellen"
@@ -64,6 +64,7 @@
   "entity": {
     "sensor": {
       "solar_production_power": { "name": "Solarproduktion Leistung" },
+      "grid_import_power": { "name": "Netzbezug Leistung" },
       "grid_export_power": { "name": "Netzeinspeisung Leistung" },
       "pv_self_consumption_power": { "name": "PV-Eigenverbrauch Leistung" },
       "grid_import_today": { "name": "Netzbezug heute" },

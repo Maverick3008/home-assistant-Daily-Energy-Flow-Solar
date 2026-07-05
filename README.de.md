@@ -10,7 +10,7 @@ Integration bereitgestellt. Es werden keine YAML-Template-Sensoren
 verwendet.
 
 - Domain: `daily_energy_flow_solar`
-- Version: `0.2.9`
+- Version: `0.3.0`
 - Config Flow: ja (nur über die GUI, deutsche Begriffe)
 - IoT-Klasse: `local_polling`
 
@@ -88,14 +88,25 @@ du gebeten, folgende vorhandenen Entitäten und Optionen auszuwählen:
 
 ### Benötigte Leistungssensoren (`device_class: power`, Einheit W/kW/MW)
 
-| Feld                         | Beschreibung                       |
-| ----------------------------- | ------------------------------------ |
-| Solarproduktion Leistung      | Aktuelle Solarproduktionsleistung   |
-| Netzeinspeisung Leistung      | Aktuelle Netzeinspeisungsleistung   |
+| Feld                                                              | Beschreibung                       |
+| --------------------------------------------------------------------- | ------------------------------------ |
+| Solarproduktion Leistung                                              | Aktuelle Solarproduktionsleistung   |
+| Netzleistung (positiv = Netzbezug, negativ = Netzeinspeisung)         | Ein einziger **bidirektionaler** Netzleistungssensor |
 
-Zusätzlich gibt es den Schalter **„Netzeinspeisung Leistung ist
-negativ"** für Anlagen, bei denen der Einspeisungssensor die
-Einspeisung als negativen Wert meldet.
+**Wichtig:** Das Netzleistungs-Feld ist kein reiner
+„Nur-Einspeisung"-Sensor — es ist der eine Sensor, den dein
+Zähler/Wechselrichter ohnehin schon liefert und der **beide**
+Richtungen des Netzflusses in einem einzigen Wert abbildet, per
+Konvention:
+
+- **Positiver Wert → Netzbezug** (Bezug aus dem Netz)
+- **Negativer Wert → Netzeinspeisung** (Einspeisung ins Netz)
+
+Aus diesem einen Wert leitet die Integration sowohl den Sensor
+„Netzbezug Leistung" als auch „Netzeinspeisung Leistung" ab (siehe
+unten). Nutzt dein Sensor die umgekehrte Konvention (positiv =
+Einspeisung, negativ = Bezug), aktiviere den Schalter **„Vorzeichen
+ist umgekehrt"**, um das Vorzeichen umzudrehen.
 
 ### Preisquelle
 
@@ -124,6 +135,7 @@ Options-Änderung lädt die Integration automatisch neu.
 | Sensor                                   | Einheit  | device_class | state_class  |
 | ------------------------------------------ | -------- | ------------- | ------------- |
 | Solarproduktion Leistung                   | W        | power         | measurement   |
+| Netzbezug Leistung                         | W        | power         | measurement   |
 | Netzeinspeisung Leistung                   | W        | power         | measurement   |
 | PV-Eigenverbrauch Leistung                 | W        | power         | measurement   |
 | Netzbezug heute                            | kWh      | energy        | total         |
@@ -160,6 +172,16 @@ Rohwerte und ein `battery_note`).
 - ct/kWh → durch 100 teilen, um €/kWh zu erhalten
 
 ## Formeln
+
+### Aufteilung des bidirektionalen Netzleistungssensors
+
+```
+grid_import_power = max(grid_power, 0)
+grid_export_power = max(-grid_power, 0)
+```
+
+(`grid_power` wird zuerst negiert, falls „Vorzeichen ist umgekehrt"
+aktiviert ist.)
 
 ### PV-Eigenverbrauch
 

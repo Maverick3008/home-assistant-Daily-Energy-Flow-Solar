@@ -34,6 +34,7 @@ from .const import (
     ATTR_GRID_EXPORT_TODAY,
     ATTR_GRID_IMPORT_AVERAGE_PRICE_TODAY,
     ATTR_GRID_IMPORT_COST_TODAY,
+    ATTR_GRID_IMPORT_POWER,
     ATTR_GRID_IMPORT_TODAY,
     ATTR_HOUSE_CONSUMPTION_TODAY,
     ATTR_PV_SELF_CONSUMPTION_PERCENT,
@@ -43,8 +44,8 @@ from .const import (
     ATTR_SOLAR_PRODUCTION_TODAY,
     CONF_BATTERY_CHARGE_TODAY,
     CONF_BATTERY_DISCHARGE_TODAY,
-    CONF_GRID_EXPORT_POWER,
-    CONF_GRID_EXPORT_POWER_NEGATIVE,
+    CONF_GRID_POWER,
+    CONF_GRID_POWER_INVERTED,
     CONF_GRID_EXPORT_TODAY,
     CONF_GRID_IMPORT_TODAY,
     CONF_PRICE_SOURCE,
@@ -151,7 +152,7 @@ class DailyEnergyFlowHub:
             CONF_BATTERY_CHARGE_TODAY,
             CONF_BATTERY_DISCHARGE_TODAY,
             CONF_SOLAR_PRODUCTION_POWER,
-            CONF_GRID_EXPORT_POWER,
+            CONF_GRID_POWER,
             CONF_PRICE_SOURCE,
         ]
         return [self._conf(key) for key in keys if self._conf(key)]
@@ -320,10 +321,16 @@ class DailyEnergyFlowHub:
         """Recompute all derived values and notify sensors."""
         solar_production_power = self._read_power(CONF_SOLAR_PRODUCTION_POWER)
 
-        grid_export_power = self._read_power(CONF_GRID_EXPORT_POWER)
-        if self._conf(CONF_GRID_EXPORT_POWER_NEGATIVE, False):
-            grid_export_power = -grid_export_power
-        grid_export_power = max(grid_export_power, 0.0)
+        # The grid power sensor is bidirectional and reports both Netzbezug
+        # (grid import) and Netzeinspeisung (grid export) as a single signed
+        # value. By convention: positive = Netzbezug, negative =
+        # Netzeinspeisung. The "inverted" option flips this for sensors that
+        # use the opposite sign convention.
+        raw_grid_power = self._read_power(CONF_GRID_POWER)
+        if self._conf(CONF_GRID_POWER_INVERTED, False):
+            raw_grid_power = -raw_grid_power
+        grid_import_power = max(raw_grid_power, 0.0)
+        grid_export_power = max(-raw_grid_power, 0.0)
 
         pv_self_consumption_power = max(
             solar_production_power - grid_export_power, 0.0
@@ -382,6 +389,7 @@ class DailyEnergyFlowHub:
 
         self.data = {
             ATTR_SOLAR_PRODUCTION_POWER: solar_production_power,
+            ATTR_GRID_IMPORT_POWER: grid_import_power,
             ATTR_GRID_EXPORT_POWER: grid_export_power,
             ATTR_PV_SELF_CONSUMPTION_POWER: pv_self_consumption_power,
             ATTR_GRID_IMPORT_TODAY: grid_import_today,
@@ -407,9 +415,15 @@ class DailyEnergyFlowHub:
         return {
             "formula": "pv_self_consumption_power = max(solar_production_power - grid_export_power, 0)",
             "solar_production_power_used_w": self.data.get(ATTR_SOLAR_PRODUCTION_POWER),
+            "grid_import_power_used_w": self.data.get(ATTR_GRID_IMPORT_POWER),
             "grid_export_power_used_w": self.data.get(ATTR_GRID_EXPORT_POWER),
             "calculated_pv_self_consumption_power_w": self.data.get(
                 ATTR_PV_SELF_CONSUMPTION_POWER
+            ),
+            "grid_power_note": (
+                "Netzbezug und Netzeinspeisung stammen aus demselben "
+                "Netzleistungssensor: positiv = Netzbezug, negativ = "
+                "Netzeinspeisung."
             ),
             "battery_note": BATTERY_NOTE,
         }

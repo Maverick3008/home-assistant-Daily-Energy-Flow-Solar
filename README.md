@@ -9,7 +9,7 @@ Everything is implemented as real Home Assistant sensor entities
 provided by a custom integration. No YAML template sensors are used.
 
 - Domain: `daily_energy_flow_solar`
-- Version: `0.2.9`
+- Version: `0.3.0`
 - Config flow: yes (GUI only, German labels)
 - IoT class: `local_polling`
 
@@ -88,14 +88,24 @@ German in the UI):
 
 ### Required power sensors (`device_class: power`, unit W/kW/MW)
 
-| Field (German label)          | Description               |
-| ------------------------------ | -------------------------- |
-| Solarproduktion Leistung       | Current solar production power |
-| Netzeinspeisung Leistung       | Current grid export power |
+| Field (German label)                                              | Description               |
+| -------------------------------------------------------------------- | -------------------------- |
+| Solarproduktion Leistung                                             | Current solar production power |
+| Netzleistung (positiv = Netzbezug, negativ = Netzeinspeisung)         | A single **bidirectional** grid power sensor |
 
-There is also a toggle **"Netzeinspeisung Leistung ist negativ"**
-("Grid export power is negative") for setups where the export power
-sensor reports export as a negative value.
+**Important:** the grid power field is not a dedicated "export only"
+sensor — it is the one sensor your meter/inverter already provides
+that reports **both** directions of grid power flow in a single
+value, by convention:
+
+- **Positive value → Netzbezug** (grid import)
+- **Negative value → Netzeinspeisung** (grid export)
+
+From this single value, the integration derives both the "Netzbezug
+Leistung" and "Netzeinspeisung Leistung" sensors described below. If
+your sensor uses the opposite convention (positive = export, negative
+= import), enable the toggle **"Vorzeichen ist umgekehrt"** ("Sign is
+reversed") to flip it.
 
 ### Price source
 
@@ -124,6 +134,7 @@ automatically reloads the integration.
 | Sensor (German name)                     | Unit    | device_class | state_class  |
 | ------------------------------------------ | ------- | ------------- | ------------- |
 | Solarproduktion Leistung                   | W       | power         | measurement   |
+| Netzbezug Leistung                         | W       | power         | measurement   |
 | Netzeinspeisung Leistung                   | W       | power         | measurement   |
 | PV-Eigenverbrauch Leistung                 | W       | power         | measurement   |
 | Netzbezug heute                            | kWh     | energy        | total         |
@@ -160,6 +171,15 @@ how their value was calculated (`formula`, the raw inputs used, and a
 - ct/kWh → divide by 100 to get EUR/kWh
 
 ## Formulas
+
+### Splitting the bidirectional grid power sensor
+
+```
+grid_import_power = max(grid_power, 0)
+grid_export_power = max(-grid_power, 0)
+```
+
+(`grid_power` is negated first if "Sign is reversed" is enabled.)
 
 ### PV self-consumption
 

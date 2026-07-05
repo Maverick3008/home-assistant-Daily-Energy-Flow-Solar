@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Daily Energy Flow Solar",
-        "description": "Set up the Daily Energy Flow Solar integration. Select your existing daily counters and power sensors.",
+        "description": "Set up the Daily Energy Flow Solar integration. Select your existing daily counters and power sensors. The grid power sensor is bidirectional: positive = grid import, negative = grid export.",
         "data": {
           "name": "Name",
           "grid_import_today": "Grid import today",
@@ -12,8 +12,8 @@
           "battery_charge_today": "Battery charge today",
           "battery_discharge_today": "Battery discharge today",
           "solar_production_power": "Solar production power",
-          "grid_export_power": "Grid export power",
-          "grid_export_power_negative": "Grid export power is negative",
+          "grid_power": "Grid power (positive = import, negative = export)",
+          "grid_power_inverted": "Sign is reversed (positive = export)",
           "price_source": "Current grid electricity price",
           "price_unit": "Unit of the grid electricity price",
           "decimal_places": "Decimal places"
@@ -32,7 +32,7 @@
     "step": {
       "init": {
         "title": "Daily Energy Flow Solar options",
-        "description": "Update your sensor selection and settings.",
+        "description": "Update your sensor selection and settings. The grid power sensor is bidirectional: positive = grid import, negative = grid export.",
         "data": {
           "grid_import_today": "Grid import today",
           "grid_export_today": "Grid export today",
@@ -40,8 +40,8 @@
           "battery_charge_today": "Battery charge today",
           "battery_discharge_today": "Battery discharge today",
           "solar_production_power": "Solar production power",
-          "grid_export_power": "Grid export power",
-          "grid_export_power_negative": "Grid export power is negative",
+          "grid_power": "Grid power (positive = import, negative = export)",
+          "grid_power_inverted": "Sign is reversed (positive = export)",
           "price_source": "Current grid electricity price",
           "price_unit": "Unit of the grid electricity price",
           "decimal_places": "Decimal places"
@@ -64,6 +64,7 @@
   "entity": {
     "sensor": {
       "solar_production_power": { "name": "Solar production power" },
+      "grid_import_power": { "name": "Grid import power" },
       "grid_export_power": { "name": "Grid export power" },
       "pv_self_consumption_power": { "name": "PV self-consumption power" },
       "grid_import_today": { "name": "Grid import today" },

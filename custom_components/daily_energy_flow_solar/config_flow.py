@@ -14,8 +14,8 @@ from .const import (
     CONF_BATTERY_CHARGE_TODAY,
     CONF_BATTERY_DISCHARGE_TODAY,
     CONF_DECIMAL_PLACES,
-    CONF_GRID_EXPORT_POWER,
-    CONF_GRID_EXPORT_POWER_NEGATIVE,
+    CONF_GRID_POWER,
+    CONF_GRID_POWER_INVERTED,
     CONF_GRID_EXPORT_TODAY,
     CONF_GRID_IMPORT_TODAY,
     CONF_NAME,
@@ -24,7 +24,7 @@ from .const import (
     CONF_SOLAR_PRODUCTION_POWER,
     CONF_SOLAR_PRODUCTION_TODAY,
     DEFAULT_DECIMAL_PLACES,
-    DEFAULT_GRID_EXPORT_POWER_NEGATIVE,
+    DEFAULT_GRID_POWER_INVERTED,
     DEFAULT_PRICE_UNIT,
     DOMAIN,
     ENERGY_UNITS,
@@ -90,13 +90,13 @@ def _build_schema(defaults: dict[str, Any] | None = None) -> vol.Schema:
                 default=defaults.get(CONF_SOLAR_PRODUCTION_POWER),
             ): _power_selector(),
             vol.Required(
-                CONF_GRID_EXPORT_POWER, default=defaults.get(CONF_GRID_EXPORT_POWER)
+                CONF_GRID_POWER, default=defaults.get(CONF_GRID_POWER)
             ): _power_selector(),
             vol.Required(
-                CONF_GRID_EXPORT_POWER_NEGATIVE,
+                CONF_GRID_POWER_INVERTED,
                 default=defaults.get(
-                    CONF_GRID_EXPORT_POWER_NEGATIVE,
-                    DEFAULT_GRID_EXPORT_POWER_NEGATIVE,
+                    CONF_GRID_POWER_INVERTED,
+                    DEFAULT_GRID_POWER_INVERTED,
                 ),
             ): selector.BooleanSelector(),
             vol.Required(
@@ -136,7 +136,7 @@ def _validate_units(
     ]
     power_fields = [
         CONF_SOLAR_PRODUCTION_POWER,
-        CONF_GRID_EXPORT_POWER,
+        CONF_GRID_POWER,
     ]
 
     for field in energy_fields:

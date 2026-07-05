@@ -14,15 +14,19 @@ CONF_BATTERY_CHARGE_TODAY = "battery_charge_today"
 CONF_BATTERY_DISCHARGE_TODAY = "battery_discharge_today"
 
 CONF_SOLAR_PRODUCTION_POWER = "solar_production_power"
-CONF_GRID_EXPORT_POWER = "grid_export_power"
-CONF_GRID_EXPORT_POWER_NEGATIVE = "grid_export_power_negative"
+# A single, bidirectional grid power sensor. By convention (matching most
+# smart meters / inverters):
+#   positive value -> Netzbezug (grid import)
+#   negative value -> Netzeinspeisung (grid export)
+CONF_GRID_POWER = "grid_power"
+CONF_GRID_POWER_INVERTED = "grid_power_inverted"
 
 CONF_PRICE_SOURCE = "price_source"
 CONF_PRICE_UNIT = "price_unit"
 CONF_DECIMAL_PLACES = "decimal_places"
 
 DEFAULT_DECIMAL_PLACES = 2
-DEFAULT_GRID_EXPORT_POWER_NEGATIVE = False
+DEFAULT_GRID_POWER_INVERTED = False
 DEFAULT_PRICE_UNIT = "EUR/kWh"
 
 PRICE_UNIT_EUR_KWH = "EUR/kWh"
@@ -45,6 +49,7 @@ SIGNAL_UPDATE = f"{DOMAIN}_update_{{entry_id}}"
 
 # Hub attribute keys (internal, used to look up computed values)
 ATTR_SOLAR_PRODUCTION_POWER = "solar_production_power"
+ATTR_GRID_IMPORT_POWER = "grid_import_power"
 ATTR_GRID_EXPORT_POWER = "grid_export_power"
 ATTR_PV_SELF_CONSUMPTION_POWER = "pv_self_consumption_power"
 

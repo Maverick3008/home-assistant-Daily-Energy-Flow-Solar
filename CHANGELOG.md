@@ -2,6 +2,27 @@
 
 All notable changes to the Daily Energy Flow Solar integration are documented here.
 
+## [0.3.0]
+
+- **Fixed a sign-convention bug** in the grid power handling. There is
+  now a single, bidirectional grid power input field ("Netzleistung")
+  instead of an export-only field. By convention: positive value =
+  Netzbezug (grid import), negative value = Netzeinspeisung (grid
+  export). Both `grid_import_power` and `grid_export_power` are now
+  correctly derived from this one sensor.
+- Renamed the config field `grid_export_power` → `grid_power`, and the
+  toggle `grid_export_power_negative` → `grid_power_inverted` ("Sign is
+  reversed"), which now only needs to be enabled for sensors using the
+  opposite convention (positive = export, negative = import).
+- Added a new sensor: **Netzbezug Leistung** (grid import power),
+  derived from the same bidirectional grid power sensor as "Netzeinspeisung
+  Leistung".
+- Updated diagnostic attributes on the PV self-consumption power
+  sensor to include the used grid import power value and a note about
+  the shared grid power sensor convention.
+- Updated German and English translations and documentation to reflect
+  the new field.
+
 ## [0.2.9] - Initial release
 
 - Initial version 0.2.9.
