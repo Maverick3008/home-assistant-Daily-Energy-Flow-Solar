@@ -2,6 +2,25 @@
 
 All notable changes to the Daily Energy Flow Solar integration are documented here.
 
+## [0.5.1]
+
+- **Fixed a bug in the grid import cost tracker** that could inflate
+  "Netzbezug Kosten heute" / "Durchschnittlicher Netzstrompreis heute".
+  If the "Netzbezug heute" sensor was briefly `unavailable` or
+  `unknown` (e.g. right after a Home Assistant restart or an
+  integration reload, before the source integration repopulated its
+  states), this was previously misread as a genuine "0 kWh" reading.
+  Once the sensor reported its real value again, the resulting jump
+  was charged in full as a one-time cost spike at whatever price was
+  active at that moment — permanently skewing that day's accumulated
+  cost and average price.
+  Now, an unavailable/unknown reading is skipped entirely for cost
+  tracking purposes instead of being treated as 0, so no phantom delta
+  is ever charged.
+- This does not affect the other calculated sensors, which already
+  self-correct on the next update; only the persistent cost
+  accumulator needed this guard.
+
 ## [0.5.0]
 
 - **Fixed the battery power input.** The two separate fields "Akkuladung

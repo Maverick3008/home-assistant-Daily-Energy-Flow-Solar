@@ -237,6 +237,30 @@ class DailyEnergyFlowHub:
         unit = state.attributes.get("unit_of_measurement")
         return normalize_energy(value, unit)
 
+    def _read_energy_or_none(self, key: str) -> float | None:
+        """Like _read_energy, but returns None instead of 0.0 when the
+        entity is missing, unavailable, or has an unparseable state.
+
+        This distinction matters for the persistent grid import cost
+        tracker: a transient "unavailable" state (e.g. right after a
+        Home Assistant restart or an integration reload, before the
+        source integration has repopulated its states) must NOT be
+        treated as a real "0 kWh" reading. Doing so would corrupt the
+        stored baseline and cause a large, bogus cost delta to be
+        charged once the sensor reports its real value again.
+        """
+        entity_id = self._conf(key)
+        if not entity_id:
+            return None
+        state = self.hass.states.get(entity_id)
+        if state is None or state.state in ("unknown", "unavailable"):
+            return None
+        value = _to_float(state.state)
+        if value is None:
+            return None
+        unit = state.attributes.get("unit_of_measurement")
+        return normalize_energy(value, unit)
+
     def _read_power(self, key: str) -> float:
         entity_id = self._conf(key)
         if not entity_id:
@@ -281,7 +305,9 @@ class DailyEnergyFlowHub:
     # ------------------------------------------------------------------
     # Core calculation
     # ------------------------------------------------------------------
-    def _update_grid_import_cost(self, grid_import_today: float, current_price: float) -> None:
+    def _update_grid_import_cost(
+        self, grid_import_today: float | None, current_price: float
+    ) -> None:
         """Update the accumulated grid import cost using deltas.
 
         Costs are calculated as:
@@ -291,6 +317,14 @@ class DailyEnergyFlowHub:
         counter by the current price, which would misrepresent costs when
         the price changes throughout the day.
         """
+        if grid_import_today is None:
+            # The grid import sensor is currently unavailable/unknown
+            # (e.g. right after a restart or reload). Skip this cycle
+            # entirely rather than treating it as a 0 kWh reading, which
+            # would otherwise corrupt the stored baseline and cause a
+            # bogus cost spike once the sensor comes back.
+            return
+
         today = dt_util.now().date()
 
         if self._tracked_day is None:
@@ -403,7 +437,8 @@ class DailyEnergyFlowHub:
 
         current_grid_price = self._read_price()
 
-        self._update_grid_import_cost(grid_import_today, current_grid_price)
+        grid_import_today_for_cost = self._read_energy_or_none(CONF_GRID_IMPORT_TODAY)
+        self._update_grid_import_cost(grid_import_today_for_cost, current_grid_price)
         await self._async_save_cost_data()
 
         if grid_import_today > 0:
