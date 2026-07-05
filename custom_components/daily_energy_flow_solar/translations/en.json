@@ -14,8 +14,8 @@
           "solar_production_power": "Solar production power",
           "grid_power": "Grid power (positive = import, negative = export)",
           "grid_power_inverted": "Sign is reversed (positive = export)",
-          "battery_charge_power": "Battery charge power",
-          "battery_discharge_power": "Battery discharge power",
+          "battery_power": "Battery power (positive = charging, negative = discharging)",
+          "battery_power_inverted": "Sign is reversed (positive = discharging)",
           "price_source": "Current grid electricity price",
           "price_unit": "Unit of the grid electricity price",
           "decimal_places": "Decimal places"
@@ -44,8 +44,8 @@
           "solar_production_power": "Solar production power",
           "grid_power": "Grid power (positive = import, negative = export)",
           "grid_power_inverted": "Sign is reversed (positive = export)",
-          "battery_charge_power": "Battery charge power",
-          "battery_discharge_power": "Battery discharge power",
+          "battery_power": "Battery power (positive = charging, negative = discharging)",
+          "battery_power_inverted": "Sign is reversed (positive = discharging)",
           "price_source": "Current grid electricity price",
           "price_unit": "Unit of the grid electricity price",
           "decimal_places": "Decimal places"
@@ -67,23 +67,57 @@
   },
   "entity": {
     "sensor": {
-      "solar_production_power": { "name": "Solar production power" },
-      "grid_import_power": { "name": "Grid import power" },
-      "grid_export_power": { "name": "Grid export power" },
-      "pv_self_consumption_power": { "name": "PV self-consumption power" },
-      "house_consumption_power": { "name": "House consumption power" },
-      "grid_import_today": { "name": "Grid import today" },
-      "grid_export_today": { "name": "Grid export today" },
-      "solar_production_today": { "name": "Solar production today" },
-      "battery_charge_today": { "name": "Battery charge today" },
-      "battery_discharge_today": { "name": "Battery discharge today" },
-      "pv_self_consumption_today": { "name": "PV self-consumption today" },
-      "house_consumption_today": { "name": "House consumption today" },
-      "autarky_percent": { "name": "Autarky" },
-      "pv_self_consumption_percent": { "name": "PV self-consumption" },
-      "current_grid_price": { "name": "Current grid electricity price" },
-      "grid_import_cost_today": { "name": "Grid import cost today" },
-      "grid_import_average_price_today": { "name": "Average grid electricity price today" }
+      "solar_production_power": {
+        "name": "Solar production power"
+      },
+      "grid_import_power": {
+        "name": "Grid import power"
+      },
+      "grid_export_power": {
+        "name": "Grid export power"
+      },
+      "pv_self_consumption_power": {
+        "name": "PV self-consumption power"
+      },
+      "house_consumption_power": {
+        "name": "House consumption power"
+      },
+      "grid_import_today": {
+        "name": "Grid import today"
+      },
+      "grid_export_today": {
+        "name": "Grid export today"
+      },
+      "solar_production_today": {
+        "name": "Solar production today"
+      },
+      "battery_charge_today": {
+        "name": "Battery charge today"
+      },
+      "battery_discharge_today": {
+        "name": "Battery discharge today"
+      },
+      "pv_self_consumption_today": {
+        "name": "PV self-consumption today"
+      },
+      "house_consumption_today": {
+        "name": "House consumption today"
+      },
+      "autarky_percent": {
+        "name": "Autarky"
+      },
+      "pv_self_consumption_percent": {
+        "name": "PV self-consumption"
+      },
+      "current_grid_price": {
+        "name": "Current grid electricity price"
+      },
+      "grid_import_cost_today": {
+        "name": "Grid import cost today"
+      },
+      "grid_import_average_price_today": {
+        "name": "Average grid electricity price today"
+      }
     }
   }
 }

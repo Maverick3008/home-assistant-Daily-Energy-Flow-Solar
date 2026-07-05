@@ -11,10 +11,10 @@ from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers import selector
 
 from .const import (
-    CONF_BATTERY_CHARGE_POWER,
     CONF_BATTERY_CHARGE_TODAY,
-    CONF_BATTERY_DISCHARGE_POWER,
     CONF_BATTERY_DISCHARGE_TODAY,
+    CONF_BATTERY_POWER,
+    CONF_BATTERY_POWER_INVERTED,
     CONF_DECIMAL_PLACES,
     CONF_GRID_POWER,
     CONF_GRID_POWER_INVERTED,
@@ -25,6 +25,7 @@ from .const import (
     CONF_PRICE_UNIT,
     CONF_SOLAR_PRODUCTION_POWER,
     CONF_SOLAR_PRODUCTION_TODAY,
+    DEFAULT_BATTERY_POWER_INVERTED,
     DEFAULT_DECIMAL_PLACES,
     DEFAULT_GRID_POWER_INVERTED,
     DEFAULT_PRICE_UNIT,
@@ -102,13 +103,16 @@ def _build_schema(defaults: dict[str, Any] | None = None) -> vol.Schema:
                 ),
             ): selector.BooleanSelector(),
             vol.Required(
-                CONF_BATTERY_CHARGE_POWER,
-                default=defaults.get(CONF_BATTERY_CHARGE_POWER),
+                CONF_BATTERY_POWER,
+                default=defaults.get(CONF_BATTERY_POWER),
             ): _power_selector(),
             vol.Required(
-                CONF_BATTERY_DISCHARGE_POWER,
-                default=defaults.get(CONF_BATTERY_DISCHARGE_POWER),
-            ): _power_selector(),
+                CONF_BATTERY_POWER_INVERTED,
+                default=defaults.get(
+                    CONF_BATTERY_POWER_INVERTED,
+                    DEFAULT_BATTERY_POWER_INVERTED,
+                ),
+            ): selector.BooleanSelector(),
             vol.Required(
                 CONF_PRICE_SOURCE, default=defaults.get(CONF_PRICE_SOURCE)
             ): _price_selector(),
@@ -147,8 +151,7 @@ def _validate_units(
     power_fields = [
         CONF_SOLAR_PRODUCTION_POWER,
         CONF_GRID_POWER,
-        CONF_BATTERY_CHARGE_POWER,
-        CONF_BATTERY_DISCHARGE_POWER,
+        CONF_BATTERY_POWER,
     ]
 
     for field in energy_fields:

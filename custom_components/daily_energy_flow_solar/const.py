@@ -21,8 +21,11 @@ CONF_SOLAR_PRODUCTION_POWER = "solar_production_power"
 CONF_GRID_POWER = "grid_power"
 CONF_GRID_POWER_INVERTED = "grid_power_inverted"
 
-CONF_BATTERY_CHARGE_POWER = "battery_charge_power"
-CONF_BATTERY_DISCHARGE_POWER = "battery_discharge_power"
+# A single, bidirectional battery power sensor. By convention:
+#   positive value -> Akkuladung (battery charging)
+#   negative value -> Akkuentladung (battery discharging)
+CONF_BATTERY_POWER = "battery_power"
+CONF_BATTERY_POWER_INVERTED = "battery_power_inverted"
 
 CONF_PRICE_SOURCE = "price_source"
 CONF_PRICE_UNIT = "price_unit"
@@ -30,6 +33,7 @@ CONF_DECIMAL_PLACES = "decimal_places"
 
 DEFAULT_DECIMAL_PLACES = 2
 DEFAULT_GRID_POWER_INVERTED = False
+DEFAULT_BATTERY_POWER_INVERTED = False
 DEFAULT_PRICE_UNIT = "EUR/kWh"
 
 PRICE_UNIT_EUR_KWH = "EUR/kWh"

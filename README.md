@@ -9,7 +9,7 @@ Everything is implemented as real Home Assistant sensor entities
 provided by a custom integration. No YAML template sensors are used.
 
 - Domain: `daily_energy_flow_solar`
-- Version: `0.4.0`
+- Version: `0.5.0`
 - Config flow: yes (GUI only, German labels)
 - IoT class: `local_polling`
 
@@ -92,22 +92,24 @@ German in the UI):
 | -------------------------------------------------------------------- | -------------------------- |
 | Solarproduktion Leistung                                             | Current solar production power |
 | Netzleistung (positiv = Netzbezug, negativ = Netzeinspeisung)         | A single **bidirectional** grid power sensor |
-| Akkuladung Leistung                                                  | Current battery charge power |
-| Akkuentladung Leistung                                               | Current battery discharge power |
+| Akkuleistung (positiv = Laden, negativ = Entladen)                   | A single **bidirectional** battery power sensor |
 
-**Important:** the grid power field is not a dedicated "export only"
-sensor — it is the one sensor your meter/inverter already provides
-that reports **both** directions of grid power flow in a single
-value, by convention:
+**Important:** both the grid power and battery power fields are
+bidirectional — each is the one sensor your meter/inverter/battery
+system already provides that reports **both** directions of flow in a
+single value, by convention:
 
-- **Positive value → Netzbezug** (grid import)
-- **Negative value → Netzeinspeisung** (grid export)
+- **Grid power:** positive → Netzbezug (grid import), negative →
+  Netzeinspeisung (grid export)
+- **Battery power:** positive → Akkuladung (charging), negative →
+  Akkuentladung (discharging)
 
-From this single value, the integration derives both the "Netzbezug
-Leistung" and "Netzeinspeisung Leistung" sensors described below. If
-your sensor uses the opposite convention (positive = export, negative
-= import), enable the toggle **"Vorzeichen ist umgekehrt"** ("Sign is
-reversed") to flip it.
+From these values, the integration derives the "Netzbezug Leistung" /
+"Netzeinspeisung Leistung" sensors and the internal battery
+charge/discharge power used in the house consumption formula. If
+either of your sensors uses the opposite convention, enable the
+corresponding **"Vorzeichen ist umgekehrt"** ("Sign is reversed")
+toggle to flip it.
 
 ### Price source
 
@@ -183,6 +185,16 @@ grid_export_power = max(-grid_power, 0)
 ```
 
 (`grid_power` is negated first if "Sign is reversed" is enabled.)
+
+### Splitting the bidirectional battery power sensor
+
+```
+battery_charge_power = max(battery_power, 0)
+battery_discharge_power = max(-battery_power, 0)
+```
+
+(`battery_power` is negated first if its "Sign is reversed" toggle is
+enabled.)
 
 ### PV self-consumption
 

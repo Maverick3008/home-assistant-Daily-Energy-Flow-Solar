@@ -1,7 +1,7 @@
 {
   "domain": "daily_energy_flow_solar",
   "name": "Daily Energy Flow Solar",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "config_flow": true,
   "documentation": "https://github.com/Maverick3008/home-assistant-Daily-Energy-Flow-Solar",
   "issue_tracker": "https://github.com/Maverick3008/home-assistant-Daily-Energy-Flow-Solar/issues",

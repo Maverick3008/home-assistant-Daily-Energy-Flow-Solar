@@ -45,10 +45,10 @@ from .const import (
     ATTR_PV_SELF_CONSUMPTION_TODAY,
     ATTR_SOLAR_PRODUCTION_POWER,
     ATTR_SOLAR_PRODUCTION_TODAY,
-    CONF_BATTERY_CHARGE_POWER,
     CONF_BATTERY_CHARGE_TODAY,
-    CONF_BATTERY_DISCHARGE_POWER,
     CONF_BATTERY_DISCHARGE_TODAY,
+    CONF_BATTERY_POWER,
+    CONF_BATTERY_POWER_INVERTED,
     CONF_GRID_POWER,
     CONF_GRID_POWER_INVERTED,
     CONF_GRID_EXPORT_TODAY,
@@ -158,8 +158,7 @@ class DailyEnergyFlowHub:
             CONF_BATTERY_DISCHARGE_TODAY,
             CONF_SOLAR_PRODUCTION_POWER,
             CONF_GRID_POWER,
-            CONF_BATTERY_CHARGE_POWER,
-            CONF_BATTERY_DISCHARGE_POWER,
+            CONF_BATTERY_POWER,
             CONF_PRICE_SOURCE,
         ]
         return [self._conf(key) for key in keys if self._conf(key)]
@@ -343,8 +342,16 @@ class DailyEnergyFlowHub:
             solar_production_power - grid_export_power, 0.0
         )
 
-        battery_charge_power = self._read_power(CONF_BATTERY_CHARGE_POWER)
-        battery_discharge_power = self._read_power(CONF_BATTERY_DISCHARGE_POWER)
+        # The battery power sensor is bidirectional and reports both
+        # Akkuladung (battery charging) and Akkuentladung (battery
+        # discharging) as a single signed value. By convention: positive =
+        # Akkuladung, negative = Akkuentladung. The "inverted" option flips
+        # this for sensors that use the opposite sign convention.
+        raw_battery_power = self._read_power(CONF_BATTERY_POWER)
+        if self._conf(CONF_BATTERY_POWER_INVERTED, False):
+            raw_battery_power = -raw_battery_power
+        battery_charge_power = max(raw_battery_power, 0.0)
+        battery_discharge_power = max(-raw_battery_power, 0.0)
 
         house_consumption_power = max(
             grid_import_power
@@ -485,6 +492,11 @@ class DailyEnergyFlowHub:
             "battery_discharge_power_used_w": self.data.get(ATTR_BATTERY_DISCHARGE_POWER),
             "calculated_house_consumption_power_w": self.data.get(
                 ATTR_HOUSE_CONSUMPTION_POWER
+            ),
+            "battery_power_note": (
+                "Akkuladung und Akkuentladung stammen aus demselben "
+                "Akkuleistungssensor: positiv = Akkuladung, negativ = "
+                "Akkuentladung."
             ),
             "battery_note": BATTERY_NOTE,
         }

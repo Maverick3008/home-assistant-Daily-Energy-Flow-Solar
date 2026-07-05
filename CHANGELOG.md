@@ -2,6 +2,24 @@
 
 All notable changes to the Daily Energy Flow Solar integration are documented here.
 
+## [0.5.0]
+
+- **Fixed the battery power input.** The two separate fields "Akkuladung
+  Leistung" and "Akkuentladung Leistung" have been replaced with a
+  single **bidirectional** field: **Akkuleistung** (`battery_power`),
+  matching how most battery inverters actually report power. By
+  convention: positive = Akkuladung (charging), negative =
+  Akkuentladung (discharging).
+- Added a **"Vorzeichen ist umgekehrt"** ("Sign is reversed") toggle
+  for the battery power sensor, for systems using the opposite
+  convention — mirroring the existing toggle for the grid power
+  sensor.
+- `battery_charge_power` and `battery_discharge_power` are now derived
+  internally from this one sensor and used in the "Hausverbrauch
+  Leistung" (house consumption power) formula exactly as before.
+- Updated diagnostic attributes, translations (DE/EN) and
+  documentation.
+
 ## [0.4.0]
 
 - Added two new required power input fields: **Akkuladung Leistung**

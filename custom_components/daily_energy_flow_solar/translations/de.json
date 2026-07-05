@@ -14,8 +14,8 @@
           "solar_production_power": "Solarproduktion Leistung",
           "grid_power": "Netzleistung (positiv = Netzbezug, negativ = Netzeinspeisung)",
           "grid_power_inverted": "Vorzeichen ist umgekehrt (positiv = Netzeinspeisung)",
-          "battery_charge_power": "Akkuladung Leistung",
-          "battery_discharge_power": "Akkuentladung Leistung",
+          "battery_power": "Akkuleistung (positiv = Laden, negativ = Entladen)",
+          "battery_power_inverted": "Vorzeichen ist umgekehrt (positiv = Entladen)",
           "price_source": "Aktueller Netzstrompreis",
           "price_unit": "Einheit des Netzstrompreises",
           "decimal_places": "Nachkommastellen"
@@ -44,8 +44,8 @@
           "solar_production_power": "Solarproduktion Leistung",
           "grid_power": "Netzleistung (positiv = Netzbezug, negativ = Netzeinspeisung)",
           "grid_power_inverted": "Vorzeichen ist umgekehrt (positiv = Netzeinspeisung)",
-          "battery_charge_power": "Akkuladung Leistung",
-          "battery_discharge_power": "Akkuentladung Leistung",
+          "battery_power": "Akkuleistung (positiv = Laden, negativ = Entladen)",
+          "battery_power_inverted": "Vorzeichen ist umgekehrt (positiv = Entladen)",
           "price_source": "Aktueller Netzstrompreis",
           "price_unit": "Einheit des Netzstrompreises",
           "decimal_places": "Nachkommastellen"
@@ -67,23 +67,57 @@
   },
   "entity": {
     "sensor": {
-      "solar_production_power": { "name": "Solarproduktion Leistung" },
-      "grid_import_power": { "name": "Netzbezug Leistung" },
-      "grid_export_power": { "name": "Netzeinspeisung Leistung" },
-      "pv_self_consumption_power": { "name": "PV-Eigenverbrauch Leistung" },
-      "house_consumption_power": { "name": "Hausverbrauch Leistung" },
-      "grid_import_today": { "name": "Netzbezug heute" },
-      "grid_export_today": { "name": "Netzeinspeisung heute" },
-      "solar_production_today": { "name": "Solarproduktion heute" },
-      "battery_charge_today": { "name": "Akkuladung heute" },
-      "battery_discharge_today": { "name": "Akkuentladung heute" },
-      "pv_self_consumption_today": { "name": "PV-Eigenverbrauch heute" },
-      "house_consumption_today": { "name": "Hausverbrauch heute" },
-      "autarky_percent": { "name": "Autarkie" },
-      "pv_self_consumption_percent": { "name": "PV-Eigenverbrauch" },
-      "current_grid_price": { "name": "Aktueller Netzstrompreis" },
-      "grid_import_cost_today": { "name": "Netzbezug Kosten heute" },
-      "grid_import_average_price_today": { "name": "Durchschnittlicher Netzstrompreis heute" }
+      "solar_production_power": {
+        "name": "Solarproduktion Leistung"
+      },
+      "grid_import_power": {
+        "name": "Netzbezug Leistung"
+      },
+      "grid_export_power": {
+        "name": "Netzeinspeisung Leistung"
+      },
+      "pv_self_consumption_power": {
+        "name": "PV-Eigenverbrauch Leistung"
+      },
+      "house_consumption_power": {
+        "name": "Hausverbrauch Leistung"
+      },
+      "grid_import_today": {
+        "name": "Netzbezug heute"
+      },
+      "grid_export_today": {
+        "name": "Netzeinspeisung heute"
+      },
+      "solar_production_today": {
+        "name": "Solarproduktion heute"
+      },
+      "battery_charge_today": {
+        "name": "Akkuladung heute"
+      },
+      "battery_discharge_today": {
+        "name": "Akkuentladung heute"
+      },
+      "pv_self_consumption_today": {
+        "name": "PV-Eigenverbrauch heute"
+      },
+      "house_consumption_today": {
+        "name": "Hausverbrauch heute"
+      },
+      "autarky_percent": {
+        "name": "Autarkie"
+      },
+      "pv_self_consumption_percent": {
+        "name": "PV-Eigenverbrauch"
+      },
+      "current_grid_price": {
+        "name": "Aktueller Netzstrompreis"
+      },
+      "grid_import_cost_today": {
+        "name": "Netzbezug Kosten heute"
+      },
+      "grid_import_average_price_today": {
+        "name": "Durchschnittlicher Netzstrompreis heute"
+      }
     }
   }
 }

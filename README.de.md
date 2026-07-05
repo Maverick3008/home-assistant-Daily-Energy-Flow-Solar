@@ -10,7 +10,7 @@ Integration bereitgestellt. Es werden keine YAML-Template-Sensoren
 verwendet.
 
 - Domain: `daily_energy_flow_solar`
-- Version: `0.4.0`
+- Version: `0.5.0`
 - Config Flow: ja (nur über die GUI, deutsche Begriffe)
 - IoT-Klasse: `local_polling`
 
@@ -92,23 +92,25 @@ du gebeten, folgende vorhandenen Entitäten und Optionen auszuwählen:
 | --------------------------------------------------------------------- | ------------------------------------ |
 | Solarproduktion Leistung                                              | Aktuelle Solarproduktionsleistung   |
 | Netzleistung (positiv = Netzbezug, negativ = Netzeinspeisung)         | Ein einziger **bidirektionaler** Netzleistungssensor |
-| Akkuladung Leistung                                                   | Aktuelle Akkuladeleistung |
-| Akkuentladung Leistung                                                | Aktuelle Akkuentladeleistung |
+| Akkuleistung (positiv = Laden, negativ = Entladen)                    | Ein einziger **bidirektionaler** Akkuleistungssensor |
 
-**Wichtig:** Das Netzleistungs-Feld ist kein reiner
-„Nur-Einspeisung"-Sensor — es ist der eine Sensor, den dein
-Zähler/Wechselrichter ohnehin schon liefert und der **beide**
-Richtungen des Netzflusses in einem einzigen Wert abbildet, per
+**Wichtig:** Sowohl das Netzleistungs- als auch das
+Akkuleistungs-Feld sind bidirektional — jeweils der eine Sensor, den
+dein Zähler/Wechselrichter/Batteriesystem ohnehin schon liefert und
+der **beide** Richtungen in einem einzigen Wert abbildet, per
 Konvention:
 
-- **Positiver Wert → Netzbezug** (Bezug aus dem Netz)
-- **Negativer Wert → Netzeinspeisung** (Einspeisung ins Netz)
+- **Netzleistung:** positiv → Netzbezug (Bezug aus dem Netz), negativ
+  → Netzeinspeisung (Einspeisung ins Netz)
+- **Akkuleistung:** positiv → Akkuladung (Laden), negativ →
+  Akkuentladung (Entladen)
 
-Aus diesem einen Wert leitet die Integration sowohl den Sensor
-„Netzbezug Leistung" als auch „Netzeinspeisung Leistung" ab (siehe
-unten). Nutzt dein Sensor die umgekehrte Konvention (positiv =
-Einspeisung, negativ = Bezug), aktiviere den Schalter **„Vorzeichen
-ist umgekehrt"**, um das Vorzeichen umzudrehen.
+Aus diesen Werten leitet die Integration die Sensoren „Netzbezug
+Leistung" / „Netzeinspeisung Leistung" sowie intern die
+Akkuladung/-entladung Leistung für die Hausverbrauchs-Formel ab.
+Nutzt einer deiner Sensoren die umgekehrte Konvention, aktiviere den
+jeweiligen Schalter **„Vorzeichen ist umgekehrt"**, um das Vorzeichen
+umzudrehen.
 
 ### Preisquelle
 
@@ -185,6 +187,16 @@ grid_export_power = max(-grid_power, 0)
 
 (`grid_power` wird zuerst negiert, falls „Vorzeichen ist umgekehrt"
 aktiviert ist.)
+
+### Aufteilung des bidirektionalen Akkuleistungssensors
+
+```
+battery_charge_power = max(battery_power, 0)
+battery_discharge_power = max(-battery_power, 0)
+```
+
+(`battery_power` wird zuerst negiert, falls der zugehörige Schalter
+„Vorzeichen ist umgekehrt" aktiviert ist.)
 
 ### PV-Eigenverbrauch
 
