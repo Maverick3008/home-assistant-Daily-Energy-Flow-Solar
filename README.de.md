@@ -10,7 +10,7 @@ Integration bereitgestellt. Es werden keine YAML-Template-Sensoren
 verwendet.
 
 - Domain: `daily_energy_flow_solar`
-- Version: `0.5.1`
+- Version: `1.0.0`
 - Config Flow: ja (nur über die GUI, deutsche Begriffe)
 - IoT-Klasse: `local_polling`
 

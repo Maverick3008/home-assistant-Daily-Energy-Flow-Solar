@@ -9,7 +9,7 @@ Everything is implemented as real Home Assistant sensor entities
 provided by a custom integration. No YAML template sensors are used.
 
 - Domain: `daily_energy_flow_solar`
-- Version: `0.5.1`
+- Version: `1.0.0`
 - Config flow: yes (GUI only, German labels)
 - IoT class: `local_polling`
 

@@ -2,6 +2,12 @@
 
 All notable changes to the Daily Energy Flow Solar integration are documented here.
 
+## [1.0.0]
+
+First stable release. No functional or code changes compared to
+0.5.1 — this version bump simply marks the integration as stable and
+ready for general use after testing.
+
 ## [0.5.1]
 
 - **Fixed a bug in the grid import cost tracker** that could inflate
